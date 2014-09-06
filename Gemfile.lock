@@ -1,0 +1,36 @@
+PATH
+  remote: .
+  specs:
+    interpolation (0.0.1)
+      nmatrix (~> 0.0.9)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.2.5)
+    json (1.8.1)
+    nmatrix (0.0.9)
+      rdoc (>= 4.0.1)
+    rake (10.3.2)
+    rdoc (4.1.1)
+      json (~> 1.4)
+    rspec (3.1.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+    rspec-core (3.1.1)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-mocks (3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  interpolation!
+  rake
+  rspec

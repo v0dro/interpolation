@@ -36,8 +36,8 @@ describe Interpolation::OneDimensional do
     expect(f.interpolate([2.5,6.7,0.3,8.6])).to eq [13.737, 888.672, 
       1.515, 6054.234]
 
-    expect(f.interpolate(NMatrix.new([4,1], [2.5,6.7,0.3,8.6]))).to eq NMatrix.new(
-      [4], [13.737, 888.672, 1.515, 6054.234])
+    # expect(f.interpolate(NMatrix.new([4,1], [2.5,6.7,0.3,8.6]))).to eq NMatrix.new(
+    #   [4], [13.737, 888.672, 1.515, 6054.234])
   end
 
   it "tests linear interpolation for N-dimensional y values" do
@@ -54,13 +54,13 @@ describe Interpolation::OneDimensional do
         [6054.234, 6054.234, 6054.234 ]
       ]
 
-    expect(f.interpolate(NMatrix.new([4,1], [2.5,6.7,0.3,8.6]))).to eq \
-      NMatrix.new([4,3], 
-      [ 13.737  , 13.737  , 13.737 , 
-        888.672 , 888.672 , 888.672,
-        1.515   , 1.515   , 1.515  ,
-        6054.234, 6054.234, 6054.234 
-      ]) 
+    # expect(f.interpolate(NMatrix.new([4,1], [2.5,6.7,0.3,8.6]))).to eq \
+    #   NMatrix.new([4,3], 
+    #   [ 13.737  , 13.737  , 13.737 , 
+    #     888.672 , 888.672 , 888.672,
+    #     1.515   , 1.515   , 1.515  ,
+    #     6054.234, 6054.234, 6054.234 
+    #   ]) 
     end
 
   it "tests linear interpolation for N-dimensional y on another axis" do
@@ -72,7 +72,7 @@ describe Interpolation::OneDimensional do
    expect(f.interpolate([2.5,6.7,0.3,8.6])).to eq [13.737, 888.672, 
     1.515, 6054.234]
 
-   expect(f.interpolate(NMatrix.new([4,1], [2.5,6.7,0.3,8.6]))).to eq NMatrix.new(
-    [4], [13.737, 888.672, 1.515, 6054.234])
+   # expect(f.interpolate(NMatrix.new([4,1], [2.5,6.7,0.3,8.6]))).to eq NMatrix.new(
+   #  [4], [13.737, 888.672, 1.515, 6054.234])
   end
 end

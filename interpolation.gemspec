@@ -1,8 +1,10 @@
+require 'version'
+
 Gem::Specification.new do |gem|
   gem.name          = "interpolation"
-  gem.version       = "0.0.1"
-  gem.summary       = "Interpolation routines in ruby. Works with NMatrix."
-  gem.description   = "Interpolation is a library for executing various interpolation functions in Ruby. Works with NMatrix."
+  gem.version       = Interpolation::VERSION
+  gem.summary       = "Interpolation routines in ruby."
+  gem.description   = "Interpolation is a library for executing various interpolation functions in Ruby."
   gem.homepage      = 'https://github.com/v0dro/interpolation'
   gem.authors       = ['Sameer Deshmukh'] 
   gem.email         =  ['sameer.deshmukh93@gmail.com']
@@ -16,5 +18,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
 
-  gem.add_runtime_dependency 'nmatrix', '~>0.0.9'
+  gem.add_runtime_dependency 'nmatrix', '~> 0.1.0.rc5'
 end

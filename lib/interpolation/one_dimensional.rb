@@ -89,7 +89,7 @@ module Interpolation
          not supported")
       end
 
-      return result.to_nm if interpolant.is_a?(NMatrix)
+      # return result.to_nm(result.size) if interpolant.is_a?(NMatrix)
 
       result
     end

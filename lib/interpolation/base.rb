@@ -22,7 +22,7 @@ module Interpolation
 
       axis  = (@opts[:axis] ? @opts[:axis] : 0)
 
-      @size = [@x.size, (@y.is_a?(NMatrix) ? @y.column(axis).size : @y.size)].min
+      @size = @x.size # considers size of @x only
       @x    = @x.sort unless @opts[:sorted]
     end
    private

@@ -1,12 +1,14 @@
 #--
-# = Interpolation
+# = Interpolation 
+# Copyright (c) 2014, Sameer Deshmukh
+# All rights reserved.
 #   
 # Interpolation is a library for executing various interpolation 
-# functions in Ruby. Works with NMatrix.
+# functions in Ruby.
 # 
-# == interpolation/base.rb
+# == spec/lib/1d_interpolation_spec.rb
 #
-# Base class for all interpolation methods.
+# Tests for 1D interpolation.
 #++
 
 module Interpolation

@@ -1,15 +1,17 @@
-$:.unshift File.dirname(__FILE__)
-
 #--
-# = Interpolation
+# = Interpolation 
+# Copyright (c) 2014, Sameer Deshmukh
+# All rights reserved.
 #   
 # Interpolation is a library for executing various interpolation 
-# functions in Ruby. Works with NMatrix.
+# functions in Ruby.
 # 
-# == interpolation/one_dimensional.rb
+# == spec/lib/1d_interpolation_spec.rb
 #
-# Methods for performing one dimensional interpolation.
+# Tests for 1D interpolation.
 #++
+
+$:.unshift File.dirname(__FILE__)
 
 require 'base.rb'
 

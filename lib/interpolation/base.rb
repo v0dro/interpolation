@@ -14,25 +14,19 @@
 module Interpolation
   class Base
     def initialize x, y, opts
-      @x, @y, @opts = x, y, opts
+      @x, @y = x, y
 
-      raise ArgumentError, "Specify the kind of interpolation?" if !@opts[:kind]
-      raise DataTypeError, "Invalid data type of x/y" if !valid_dtypes?
-      raise ArgumentError, "Axis specified out of bounds" if invalid_axis?
-
-      @opts[:precision] = 3 if !@opts[:precision]
-
-      axis  = (@opts[:axis] ? @opts[:axis] : 0)
+      @opts = {
+        axis: 0,
+        precision: 3,
+        sorted: false,
+        type: :linear
+      }.merge(opts)
 
       @size = @x.size # considers size of @x only
       @x    = @x.sort unless @opts[:sorted]
     end
    private
-
-    def valid_dtypes?
-      (@x.is_a?(Array) or @x.is_a?(NMatrix)) and
-      (@y.is_a?(Array) or @y.is_a?(NMatrix))
-    end
 
    protected
 
@@ -52,15 +46,9 @@ module Interpolation
         end
       end
 
-      if    num == @x[0]       then return 0
-      elsif num == @x[@size-1] then return @size-2
-      else                          return jl
-      end
+      return 0       if    num == @x[0]
+      return @size-2 if    num == @x[@size - 1]
+      return jl                           
     end 
-
-    def invalid_axis?
-      @opts[:axis] and @opts[:axis] > @y.cols-1
-    end
-
   end
 end

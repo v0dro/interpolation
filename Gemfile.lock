@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     interpolation (0.0.1)
-      nmatrix (~> 0.1.0.rc5)
 
 GEM
   remote: https://rubygems.org/
@@ -32,5 +31,6 @@ PLATFORMS
 
 DEPENDENCIES
   interpolation!
+  nmatrix (~> 0.1.0.rc5)
   rake
   rspec

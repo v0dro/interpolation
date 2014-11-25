@@ -21,10 +21,10 @@ module Interpolation
   # 
   # ==== Usage
   # 
-  # x = NMatrix.seq [10]
+  # x = (1..10).step(1).to_a
   # y = x.exp
   # 
-  # f = NMatrix::Interpolation::OneDimensional.new x, y, {kind: :linear, sorted: true}
+  # f = Interpolation::OneDimensional.new x, y, {kind: :linear, sorted: true}
   # i = f.interpolate 2.5
   # 
   # puts "Interpolated value for 2.5 is #{i}"
@@ -52,8 +52,8 @@ module Interpolation
     # 
     # ==== Options
     # 
-    # * +:kind+ - The kind of interpolation that the user wants to perform. Should be 
-    #             specified as a symbol. This option is compulsory. Only linear
+    # * +:type+ - The kind of interpolation that the user wants to perform. Should be 
+    #             specified as a symbol. Defaults to linear. Only linear
     #             interpolation supported as of now. 
     # 
     # * +:sorted+ - Set this option as *true* if the absicca collection is supplied in
@@ -83,15 +83,16 @@ module Interpolation
     #                   all its values. Will return answer in the form of an NMatrix if
     #                   *interpolant* is supplied as an NMatrix.
     def interpolate interpolant
-      result = case @opts[:kind]
+      result = 
+      case @opts[:type]
       when :linear
         for_each (interpolant) { |x| linear_interpolation(x)  }
+      when :slinear
+      when :quadratic
+      when :spline
       else
-        raise(ArgumentError, "1 D interpolation of kind #{@opts[:kind]} \
-         not supported")
+        raise ArgumentError, "1 D interpolation of type #{@opts[:type]} not supported"
       end
-
-      # return result.to_nm(result.size) if interpolant.is_a?(NMatrix)
 
       result
     end
@@ -121,7 +122,7 @@ module Interpolation
 
         return @y[index] if same
         return _lin_interpolator @y, index, interpolant
-      elsif @opts[:axis]
+      elsif @opts[:axis] != 0
 
         return @y.column(@opts[:axis])[index] if same
         return _lin_interpolator @y.column(@opts[:axis]), index, interpolant

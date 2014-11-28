@@ -80,30 +80,39 @@ describe Interpolation::OneDimensional do
     end
   end
 
+  context :slinear do
+    
+  end
+
   context :quadratic do
+    
+  end
+
+  context :cubic do
     before :each do
       @x  = (0..9).step(1).to_a
       @y  = @x.map { |e| Math.exp(e) }
-      @nd = [ @y, @y, @y ]
     end
 
     it "calculates quad interpolation for single axis input of Y co-ordinates" do
-      f = Interpolation::OneDimensional.new(@x, @y, type: :quadratic, sorted: true)
+      f = Interpolation::OneDimensional.new(@x, @y, type: :cubic, sorted: true)
 
-      expect(f.interpolate(2.5)).to eq()
+      expect(f.interpolate(2.5)).to eq(12.287)
     end
 
     it "calculates quad interpolation for multi-axis input of Y co-ordinates" do
-      f = Interpolation::OneDimensional.new(@x, @nd, type: :quadratic, sorted: true)
+      pending "Later"
 
+      f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true)
       expect(f.interpolate(2.5)).to eq()
 
       expect(f.interpolate([2.5,6.7,0.3,8.6])).to eq()
     end
 
     it "calculates quad interpolation only on the specified axis" do
-      f = Interpolation::OneDimensional.new(@x, @nd, type: :quadratic, sorted: true, axis: 1)
-
+      pending "Later"
+      
+      f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true, axis: 1)
     end
   end
 end

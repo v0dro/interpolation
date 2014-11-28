@@ -69,6 +69,15 @@ module Interpolation
     # 
     def initialize x, y, opts={}
       super(x,y,opts)
+
+      if @opts[:type] == :cubic
+        @opts.merge!({ 
+          yp1: 1E99, 
+          ypn: 1E99 
+        })
+
+        compute_second_derivatives
+      end
     end
 
     # Performs the actual interpolation on the value passed as an argument. Kind of 
@@ -87,9 +96,8 @@ module Interpolation
       case @opts[:type]
       when :linear
         for_each (interpolant) { |x| linear_interpolation(x)  }
-      when :slinear
-      when :quadratic
-      when :spline
+      when :cubic
+        cubic_spline_interpolation interpolant
       else
         raise ArgumentError, "1 D interpolation of type #{@opts[:type]} not supported"
       end
@@ -139,6 +147,59 @@ module Interpolation
       (y[index] + 
       ((interpolant - @x[index]) / (@x[index + 1] - @x[index])) * 
        (y[index + 1] - y[index])).round(@opts[:precision])
+    end
+
+    # References: Numerical Recipes Edition 3. Chapter 3.3
+    def compute_second_derivatives
+      @y_sd = Array.new(@size)
+
+      n      = @y_sd.size
+      u      = Array.new(n-1)
+      yp1    = @opts[:yp1] # first derivative of the 0th point as specified by the user
+      ypn    = @opts[:ypn] # first derivative of the nth point as specified by the user
+      qn, un = nil, nil
+
+      if yp1 > 0.99E30
+        @y_sd[0], u[0] = 0.0, 0.0
+      else 
+        @y_sd[0] = -0.5
+        u[0] = (3.0 / (@x[1] - @x[0])) * ((@y[1] - @y[0]) / (@x[1] - @x[0]) - yp1)
+      end
+      
+      1.upto(n-2) do |i| # decomposition loop for tridiagonal algorithm
+        sig      = ( @x[i] - @x[i-1] ) / ( @x[i+1] - @x[i-1] )
+        p        = sig * @y_sd[i-1] + 2
+        @y_sd[i] = ( sig - 1) / p 
+        u[i]     = (( @y[i+1] - @y[i]) / (@x[i+1] - @x[i])) - ((@y[i] - @y[i-1]) / (@x[i] - @x[i-1]))
+        u[i]     = ( 6 * u[i] / ( @x[i+1] - @x[i-1] ) - sig * u[i-1] ) / p;
+      end
+
+      if ypn > 0.99E30
+        qn, un = 0.0, 0.0
+      else
+        qn = 0.5
+        un = (3.0 / ( @x[n-1] - @x[n-2] )) * ( ypn - ( @y[n-1] - @y[n-2] ) / ( @x[n-1] - @x[n-2] ))
+      end
+      @y_sd[n-1] = ( un - qn * u[n-2] ) / ( qn * @y_sd[n-2] + 1.0 )
+
+      (n-2).downto(0) do |k|
+        @y_sd[k] = @y_sd[k] * @y_sd[k+1] + u[k]
+      end
+    end
+
+    def cubic_spline_interpolation interpolant
+      klo = locate interpolant
+      khi = klo + 1
+
+      h = @x[khi] - @x[klo]
+
+      raise StandardError, "Wrong input at X index #{klo} and #{khi} for cubic spline" if h == 0
+
+      a = (@x[khi] - interpolant) / h
+      b = (interpolant - @x[klo]) / h
+      y = a * @y[klo] + b * @y[khi] + ((a * a * a - a) * @y_sd[klo] + # evaluate cubic spline polynomial
+          ( b * b * b - b) * @y_sd[khi]) * ( h * h ) / 6.0
+      y.round @opts[:precision]
     end
   end
 end

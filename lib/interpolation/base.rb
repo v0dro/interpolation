@@ -25,9 +25,8 @@ module Interpolation
 
       @size = @x.size # considers size of @x only
       @x    = @x.sort unless @opts[:sorted]
+      @x.map! { |n| n = Float(n)}
     end
-   private
-
    protected
 
     def locate num 

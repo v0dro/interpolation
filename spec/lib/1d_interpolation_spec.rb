@@ -94,13 +94,20 @@ describe Interpolation::OneDimensional do
       @y  = @x.map { |e| Math.exp(e) }
     end
 
-    it "calculates quad interpolation for single axis input of Y co-ordinates" do
+    it "calculates cubic interpolation for single axis input of Y co-ordinates" do
       f = Interpolation::OneDimensional.new(@x, @y, type: :cubic, sorted: true)
 
       expect(f.interpolate(2.5)).to eq(12.287)
     end
 
-    it "calculates quad interpolation for multi-axis input of Y co-ordinates" do
+    it "interpolates for multiple points" do
+      pending "In a while"
+      f = Interpolation::OneDimensional.new(@x, @y, type: :cubic, sorted: true)
+      
+      expect(f.interpolate([2.5,3.5,4,6.5])).to eq()
+    end
+
+    it "calculates cubic interpolation for multi-axis input of Y co-ordinates" do
       pending "Later"
 
       f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true)
@@ -109,7 +116,7 @@ describe Interpolation::OneDimensional do
       expect(f.interpolate([2.5,6.7,0.3,8.6])).to eq()
     end
 
-    it "calculates quad interpolation only on the specified axis" do
+    it "calculates cubic interpolation only on the specified axis" do
       pending "Later"
       
       f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true, axis: 1)

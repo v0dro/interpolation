@@ -47,14 +47,13 @@ module Interpolation
     #            multiple columns, the interpolation is carried out on each column,
     #            unless specified.
     # 
-    # * +opts+ - Various options for carrying out the interpolation, to be specified as
-    #            a hash.
+    # * +opts+ - Various options for carrying out the interpolation.
     # 
     # ==== Options
     # 
     # * +:type+ - The kind of interpolation that the user wants to perform. Should be 
-    #             specified as a symbol. Defaults to linear. Only linear
-    #             interpolation supported as of now. 
+    #             specified as a symbol. Defaults to linear. Only linear and cubic
+    #             interpolation supported as of now. Cubic interpolation done with splines.
     # 
     # * +:sorted+ - Set this option as *true* if the absicca collection is supplied in
     #             the arguments in a sorted manner. If not supplied, it will be assumed
@@ -67,6 +66,17 @@ module Interpolation
     # * +:precision+ - Specifies the precision of the interpolated values returned. Defaults
     #             to 3.
     # 
+    # * +:yp1+ - In case of cubic spline, specify the first derivative of the 0th point.
+    # 
+    # * +:ypn+ - In case of cubic spline, specify the first derivative of the last (n-1)th point.
+    # 
+    # == Usage
+    #   
+    #   x = (0..9).step(1).to_a
+    #   y = x.map { |n| Math.exp(n) }
+    #   f = Interpolation::OneDimensional.new x,y, type: :cubic
+    #   f.interpolate 2.5
+    #     #=> 12.287
     def initialize x, y, opts={}
       super(x,y,opts)
 
@@ -104,6 +114,15 @@ module Interpolation
 
       result
     end
+
+    alias_method :[], :interpolate
+
+    # Will return the entire 'y' array (specified axis or whole matrix if not specified) with the
+    # intepolated value in the appropriate place.
+    def interp interpolant
+      
+    end
+
 
    private
 

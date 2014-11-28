@@ -7,6 +7,7 @@ Note : This library is still under development and currently does not support a 
 
 Supports the following 1D interpolation routines:
 * Linear interpolation
+* Cubic spline interpolation
 
 ## Usage
 

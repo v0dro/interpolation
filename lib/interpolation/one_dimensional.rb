@@ -30,6 +30,15 @@ module Interpolation
   # puts "Interpolated value for 2.5 is #{i}"
   class OneDimensional < Interpolation::Base
 
+    # !@attribute return_type
+    #   The data type of the returned data. Set to :array, :matrix, nmatrix.
+    #   :array by default.
+    #   @return [Array]   Returns data as a ruby Array if set to :array
+    #   @return [Matrix]  Returns data as a ruby Matrix if set to :matrix
+    #   @return [NMatrix] Returns data as an NMatrix if set to :nmatrix. Needs 
+    #   the NMatrix gem installed.
+    attr_writer :return_type
+
     # Constructor for all One Dimensional interpolation operations.
     # 
     # The function values to be supplied to this class are of the form y = f(x). 
@@ -60,11 +69,11 @@ module Interpolation
     #             that absiccas are not sorted and they will sorted be sorted anyway.
     # 
     # * +:axis+ - In case of a multidimensional ordinate matrix, specify the column over
-    #             which interpolation must be performed. *axis* starts indexing from 0 
-    #             and should be lower than the number of columns in the ordinate matrix.
-    # 
+    # which interpolation must be performed. *axis* starts indexing from 0 and should be 
+    # lower than the number of columns in the ordinate matrix.
+    #             
     # * +:precision+ - Specifies the precision of the interpolated values returned. Defaults
-    #             to 3.
+    # to 3.
     # 
     # * +:yp1+ - In case of cubic spline, specify the first derivative of the 0th point.
     # 
@@ -78,14 +87,19 @@ module Interpolation
     #   f.interpolate 2.5
     #     #=> 12.287
     def initialize x, y, opts={}
+      @return_type = :array
       super(x,y,opts)
 
       if @opts[:type] == :cubic
         @opts.merge!({ 
           yp1: 1E99, 
           ypn: 1E99 
-        })
+        })  
 
+        # I want to compute the second derivatives of the specified axis only 
+        # or if axis: :all is specified, then of all the axes.
+        # The 2nd derivatives of the the computed axis are stored in a ruby array,
+        # and a Matrix if axis: :all
         compute_second_derivatives
       end
     end
@@ -117,13 +131,12 @@ module Interpolation
 
     alias_method :[], :interpolate
 
-    # Will return the entire 'y' array (specified axis or whole matrix if not specified) with the
-    # intepolated value in the appropriate place.
+    # Return the data passed for interpolation alongwith the interpolated values.
+    # @param [Numeric, Array, NMatrix] interpolant the value of the X co-ordinate
+    # @return [Array, NMatrix] returns data based on the value of return_type
     def interp interpolant
-      
+            
     end
-
-
    private
 
     def for_each interpolant

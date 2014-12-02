@@ -19,3 +19,4 @@ See the documentation for detailed examples.
 * N-dimensional interpolation routines.
 * Optional fast data manipulation with NMatrix.
 * Easy plotting of results.
+* `:all` option for `axis`.

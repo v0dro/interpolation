@@ -11,4 +11,5 @@
 # Tests for 1D interpolation.
 #++
 
+require 'matrix'
 require 'interpolation'

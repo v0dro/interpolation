@@ -21,7 +21,7 @@ describe Interpolation::OneDimensional do
       @nd  = NMatrix.new([10,3]).each_column { |c| c[0..9] = @y }
     end
 
-    it "tests if OneDimensional accepts Array inputs" do
+    it "interpolates with 1-D ruby Array" do
       f = Interpolation::OneDimensional.new([0,1,2,3,4,5,6,7,8,9], [1.0, 
         2.718281828459045, 7.38905609893065, 20.085536923187668, 54.598150033144236, 
         148.4131591025766, 403.4287934927351, 1096.6331584284585, 2980.9579870417283, 
@@ -30,7 +30,7 @@ describe Interpolation::OneDimensional do
       expect(f.interpolate(2.5)).to eq 13.737
     end
 
-    it "tests for linear interpolation for 1-dimensional y values" do
+    it "interpolates with single axis inout" do
       f = Interpolation::OneDimensional.new(@x, @y, {type: :linear, 
         precision: 3})
 
@@ -43,8 +43,7 @@ describe Interpolation::OneDimensional do
       #   [4], [13.737, 888.672, 1.515, 6054.234])
     end
 
-    it "tests linear interpolation for N-dimensional y values" do
-
+    it "interpolates over all axes" do
       f = Interpolation::OneDimensional.new(@x,@nd, {type: :linear, 
         sorted: true, precision: 3})
 
@@ -66,7 +65,7 @@ describe Interpolation::OneDimensional do
       #   ]) 
       end
 
-    it "tests linear interpolation for N-dimensional y on another axis" do
+    it "interpolates on specified axis" do
      f = Interpolation::OneDimensional.new(@x, @nd, {type: :linear, axis: 1, 
       sorted: true, precision: 3})
      
@@ -92,6 +91,7 @@ describe Interpolation::OneDimensional do
     before :each do
       @x  = (0..9).step(1).to_a
       @y  = @x.map { |e| Math.exp(e) }
+      @nd = Matrix.columns [@y, @y, @y]
     end
 
     it "calculates cubic interpolation for single axis input of Y co-ordinates" do
@@ -101,25 +101,29 @@ describe Interpolation::OneDimensional do
     end
 
     it "interpolates for multiple points" do
-      pending "In a while"
       f = Interpolation::OneDimensional.new(@x, @y, type: :cubic, sorted: true)
       
-      expect(f.interpolate([2.5,3.5,4,6.5])).to eq()
+      expect(f.interpolate([2.5,3.5,4,6.5])).to eq([12.287, 32.930, 54.598, 669.89])
     end
 
-    it "calculates cubic interpolation for multi-axis input of Y co-ordinates" do
-      pending "Later"
+    it "interpolates over all axes" do
+      f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true, axis: :all)
 
-      f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true)
-      expect(f.interpolate(2.5)).to eq()
+      expect(f.interpolate([2.5,3.5,4,6.5])).to eq([12.287, 32.930, 54.598, 669.89])
 
-      expect(f.interpolate([2.5,6.7,0.3,8.6])).to eq()
+      expect(f.interpolate([2.5,3.5,4,6.5])). to eq([
+        [12.287, 12.287, 12.287],
+        [32.930, 32.930, 32.930],
+        [54.598, 54.598, 54.598],
+        [669.89, 669.89, 669.89]
+      ]
+        )
     end
 
-    it "calculates cubic interpolation only on the specified axis" do
-      pending "Later"
-      
+    it "interpolates only on the specified axis" do
       f = Interpolation::OneDimensional.new(@x, @nd, type: :cubic, sorted: true, axis: 1)
+
+      expect(f.interpolate([2.5,3.5,4,6.5])).to eq([12.287, 32.930, 54.598, 669.89])
     end
   end
 end

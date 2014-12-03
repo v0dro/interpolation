@@ -14,13 +14,13 @@
 require 'spec_helper.rb'
 
 describe Interpolation::OneDimensional do
-  context :linear do
-    before :each do
-      @x   = NMatrix.seq [10]
-      @y   = @x.exp
-      @nd  = NMatrix.new([10,3]).each_column { |c| c[0..9] = @y }
-    end
+  before :each do
+    @x  = (0..9).step(1).to_a
+    @y  = @x.map { |e| Math.exp(e) }
+    @nd = Matrix.columns [@y, @y, @y]
+  end
 
+  context :linear do
     context "#interpolate" do
       it "interpolates with 1-D ruby Array" do
         f = Interpolation::OneDimensional.new([0,1,2,3,4,5,6,7,8,9], [1.0, 
@@ -92,12 +92,6 @@ describe Interpolation::OneDimensional do
   end
 
   context :cubic do
-    before :each do
-      @x  = (0..9).step(1).to_a
-      @y  = @x.map { |e| Math.exp(e) }
-      @nd = Matrix.columns [@y, @y, @y]
-    end
-
     context "#interpolation" do
       it "correctly interpolates for single axis co-ordinates" do
         f = Interpolation::OneDimensional.new(@x, @y, type: :cubic, sorted: true)
@@ -133,7 +127,7 @@ describe Interpolation::OneDimensional do
     end
 
     context "#interp" do
-
+      # TODO
     end
   end
 end

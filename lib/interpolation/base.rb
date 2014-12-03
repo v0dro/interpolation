@@ -17,7 +17,6 @@ module Interpolation
       @x, @y = x, y
 
       @opts = {
-        axis: 0,
         precision: 3,
         sorted: false,
         type: :linear

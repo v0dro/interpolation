@@ -15,8 +15,8 @@ See the documentation for detailed examples.
 
 ## Roadmap
 
-* Support for all 1D interpolation routines - spline, polynomial etc.
+* Support polynomial interpolation.
 * N-dimensional interpolation routines.
 * Optional fast data manipulation with NMatrix.
 * Easy plotting of results.
-* `:all` option for `axis`.
+* Complete NMatrix integration.
